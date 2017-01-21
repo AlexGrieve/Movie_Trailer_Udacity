@@ -125,6 +125,7 @@ media_tile_content = '''
 <div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{title}</h2>
+    <h5>{storyline} ({rating})</h5>
 </div>
 '''
 
@@ -144,7 +145,9 @@ def create_media_tiles_content(media):
         content += media_tile_content.format(
             title=item.title,
             poster_image_url=item.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
+            trailer_youtube_id=trailer_youtube_id,
+            storyline=item.storyline,
+            rating=item.rating
         )
     return content
 
@@ -153,7 +156,7 @@ def open_media_page(media):
     """Create or overwrite the output file"""
     output_file = open('fresh_tomatoes.html', 'w')
 
-    #Replace the movie tiles placeholder generated content
+    # Replace the movie tiles placeholder generated content
     rendered_content = main_page_content.format(
         media_tiles=create_media_tiles_content(media))
 
