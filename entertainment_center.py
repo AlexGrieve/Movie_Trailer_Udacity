@@ -9,4 +9,4 @@ oceans_11 = media.Movie("Oceans Eleven", "Pretty people steal money", "https://u
 
 movies = [toy_story, avatar, matrix, oceans_11]
 
-fresh_tomatoes.open_movies_page(movies)
+fresh_tomatoes.open_media_page(movies)
