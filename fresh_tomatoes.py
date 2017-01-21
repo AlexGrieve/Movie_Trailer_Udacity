@@ -128,7 +128,7 @@ movie_tile_content = '''
 </div>
 '''
 
-
+# TO DO change this from movie specific to media specific
 def create_movie_tiles_content(movies):
     # The HTML content for this section of the page
     content = ''
@@ -149,7 +149,7 @@ def create_movie_tiles_content(movies):
         )
     return content
 
-
+# TO DO change this from movie specific to media specific
 def open_movies_page(movies):
     # Create or overwrite the output file
     output_file = open('fresh_tomatoes.html', 'w')
