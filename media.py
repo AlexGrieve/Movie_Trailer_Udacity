@@ -28,7 +28,7 @@ class Movie(Media):
 			self.rating = "NA"
 
 # The Movie Class, child of the Media Class
-class TVShow(Media):
+class TVshow(Media):
 	"""This class provides a way to store TV specific information"""
 	def __init__(self, title, storyline, poster_image, trailer_youtube):
 		Media.__init__(self, title, storyline, poster_image, trailer_youtube)

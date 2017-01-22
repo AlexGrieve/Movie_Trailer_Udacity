@@ -35,11 +35,11 @@ main_page_head = '''
             width: 100%;
             height: 100%;
         }
-        .media-tile {
+        .movie-tile {
             margin-bottom: 20px;
             padding-top: 20px;
         }
-        .media-tile:hover {
+        .movie-tile:hover {
             background-color: #EEE;
             cursor: pointer;
         }
@@ -112,16 +112,24 @@ main_page_content = '''
         </div>
       </div>
     </div>
-    <div class="container">
-      {media_tiles}
-    </div>
+    '''
+
+movie_page_content = '''
+      {movie_tiles}
+'''
+
+tv_page_content = '''
+      {TV_tiles}
+'''
+
+end_page_content ='''
   </body>
 </html>
 '''
 
 
-# A single media entry html template
-media_tile_content = '''
+# A single movie entry html template
+movie_tile_content = '''
 <div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{title}</h2>
@@ -129,39 +137,74 @@ media_tile_content = '''
 </div>
 '''
 
-def create_media_tiles_content(media):
-    """Creates the HTML content for the media tiles"""
+# A single tv show entry html template
+show_tile_content = '''
+<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+    <img src="{poster_image_url}" width="220" height="342">
+    <h2>{title}</h2>
+    <h5>{storyline}</h5>
+</div>
+'''
+
+def create_movie_tiles_content(movies):
+    """Creates the HTML content for the movie tiles"""
     content = ''
-    for item in media:
+    for movie in movies:
         # Extract the youtube ID from the url
         youtube_id_match = re.search(
-            r'(?<=v=)[^&#]+', item.trailer_youtube_url)
+            r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
         youtube_id_match = youtube_id_match or re.search(
-            r'(?<=be/)[^&#]+', item.trailer_youtube_url)
+            r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
         trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
                               else None)
 
-        # Append the tile for the media with its content filled in
-        content += media_tile_content.format(
-            title=item.title,
-            poster_image_url=item.poster_image_url,
+        # Append the tile for the movie with its content filled in
+        content += movie_tile_content.format(
+            title=movie.title,
+            poster_image_url=movie.poster_image_url,
             trailer_youtube_id=trailer_youtube_id,
-            storyline=item.storyline,
-            rating=item.rating
+            storyline=movie.storyline,
+            rating=movie.rating
+        )
+    return content
+
+def create_tv_tiles_content(tv_shows):
+    """Creates the HTML content for the tv show tiles"""
+    content = ''
+    for show in tv_shows:
+        # Extract the youtube ID from the url
+        youtube_id_match = re.search(
+            r'(?<=v=)[^&#]+', show.trailer_youtube_url)
+        youtube_id_match = youtube_id_match or re.search(
+            r'(?<=be/)[^&#]+', show.trailer_youtube_url)
+        trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
+                              else None)
+
+        # Append the tile for the tv show with its content filled in
+        content += show_tile_content.format(
+            title=show.title,
+            poster_image_url=show.poster_image_url,
+            trailer_youtube_id=trailer_youtube_id,
+            storyline=show.storyline,
         )
     return content
 
 
-def open_media_page(media):
+def open_media_page(movies,tv_shows):
     """Create or overwrite the output file"""
     output_file = open('fresh_tomatoes.html', 'w')
 
-    # Replace the movie tiles placeholder generated content
-    rendered_content = main_page_content.format(
-        media_tiles=create_media_tiles_content(media))
+    # Replace the movie tiles placeholder
+    rendered_movie_content = movie_page_content.format(
+        movie_tiles=create_movie_tiles_content(movies))
 
-    # Output the file
-    output_file.write(main_page_head + rendered_content)
+    # Replace the Tv tiles placeholder
+    rendered_TV_content = tv_page_content.format(
+        TV_tiles=create_tv_tiles_content(tv_shows))
+
+
+    # Write and output the file
+    output_file.write(main_page_head + main_page_content + rendered_movie_content + rendered_TV_content + end_page_content)
     output_file.close()
 
     # open the output file in the browser (in a new tab, if possible)
