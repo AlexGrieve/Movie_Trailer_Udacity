@@ -128,7 +128,9 @@ tv_page_content = '''
 
 # A single movie entry html template
 movie_tile_content = '''
-<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 media-tile text-center" 
+                data-trailer-youtube-id="{trailer_youtube_id}" 
+                data-toggle="modal" data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{title}</h2>
     <h5>{storyline} ({rating})</h5>
@@ -140,9 +142,11 @@ movie_tile_content = '''
 
 # A single tv show entry html template
 show_tile_content = '''
-<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 media-tile text-center" 
+                data-trailer-youtube-id="{trailer_youtube_id}" 
+                data-toggle="modal" data-target="#trailer">
     <img src="{poster_image_url}" width="220" height="342">
-    <h2>{title}</h2>
+    <h2>{title} ({network})</h2>
     <h5>{storyline}</h5>
 </div>
 
@@ -181,6 +185,7 @@ def create_tv_tiles_content(tv_shows):
             poster_image_url=show.poster_image_url,
             trailer_youtube_id=trailer_youtube_id,
             storyline=show.storyline,
+            network=show.network
         )
     return content
 
@@ -194,7 +199,8 @@ def open_media_page(movies,tv_shows):
         movie_tiles=create_movie_tiles_content(movies))
 
     # Write and output the movie file
-    output_movie_file.write(main_page_head + main_page_content + rendered_movie_content)
+    output_movie_file.write(main_page_head + main_page_content 
+                                        + rendered_movie_content)
     output_movie_file.close()
 
     output_tv_file = open('fresh_tv_tomatoes.html', 'w')
@@ -203,7 +209,8 @@ def open_media_page(movies,tv_shows):
         TV_tiles=create_tv_tiles_content(tv_shows))
 
     # Write and output the tv file
-    output_tv_file.write(main_page_head + main_page_content + rendered_TV_content)
+    output_tv_file.write(main_page_head + main_page_content 
+                                        + rendered_TV_content)
     output_tv_file.close()
 
     # open the output file in the browser (in a new tab, if possible)
