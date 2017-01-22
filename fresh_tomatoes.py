@@ -126,12 +126,6 @@ tv_page_content = '''
       {TV_tiles}
 '''
 
-# end_page_content ='''
-#   </body>
-# </html>
-# '''
-
-
 # A single movie entry html template
 movie_tile_content = '''
 <div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
@@ -160,13 +154,8 @@ def create_movie_tiles_content(movies):
     """Creates the HTML content for the movie tiles"""
     content = ''
     for movie in movies:
-        # Extract the youtube ID from the url
-        youtube_id_match = re.search(
-            r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
-        youtube_id_match = youtube_id_match or re.search(
-            r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
-        trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
-                              else None)
+        # Extract the YouTube ID
+        trailer_youtube_id = extract_youtube_id(movie)
 
         # Append the tile for the movie with its content filled in
         content += movie_tile_content.format(
@@ -178,17 +167,13 @@ def create_movie_tiles_content(movies):
         )
     return content
 
+
 def create_tv_tiles_content(tv_shows):
     """Creates the HTML content for the tv show tiles"""
     content = ''
     for show in tv_shows:
-        # Extract the youtube ID from the url
-        youtube_id_match = re.search(
-            r'(?<=v=)[^&#]+', show.trailer_youtube_url)
-        youtube_id_match = youtube_id_match or re.search(
-            r'(?<=be/)[^&#]+', show.trailer_youtube_url)
-        trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
-                              else None)
+        # Extract the YouTube ID
+        trailer_youtube_id = extract_youtube_id(show)
 
         # Append the tile for the tv show with its content filled in
         content += show_tile_content.format(
@@ -209,7 +194,6 @@ def open_media_page(movies,tv_shows):
         movie_tiles=create_movie_tiles_content(movies))
 
     # Write and output the movie file
-    # If this works, you can clean up the end_page_content and add to rendered
     output_movie_file.write(main_page_head + main_page_content + rendered_movie_content)
     output_movie_file.close()
 
@@ -226,4 +210,15 @@ def open_media_page(movies,tv_shows):
     url = os.path.abspath(output_movie_file.name)
     webbrowser.open('file://' + url, new=2)
 
+
+def extract_youtube_id(media):
+    """Extract the YouTube ID from youtube URL"""
+    youtube_id_match = re.search(
+        r'(?<=v=)[^&#]+', media.trailer_youtube_url)
+    youtube_id_match = youtube_id_match or re.search(
+        r'(?<=be/)[^&#]+', media.trailer_youtube_url)
+    trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
+                          else None)
+
+    return trailer_youtube_id
 
