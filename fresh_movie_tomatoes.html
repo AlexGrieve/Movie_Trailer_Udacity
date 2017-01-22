@@ -1,10 +1,4 @@
-import webbrowser
-import os
-import re
 
-
-# Styles and scripting for the page
-main_page_head = '''
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,11 +78,7 @@ main_page_head = '''
         });
     </script>
 </head>
-'''
 
-
-# The main page layout and title bar
-main_page_content = '''
   <body>
     <!-- Trailer Video Modal -->
     <div class="modal" id="trailer">
@@ -116,114 +106,41 @@ main_page_content = '''
           </div>
       </div>
     </div>
-    '''
-
-movie_page_content = '''
-      {movie_tiles}
-'''
-
-tv_page_content = '''
-      {TV_tiles}
-'''
-
-# end_page_content ='''
-#   </body>
-# </html>
-# '''
-
-
-# A single movie entry html template
-movie_tile_content = '''
-<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img src="{poster_image_url}" width="220" height="342">
-    <h2>{title}</h2>
-    <h5>{storyline} ({rating})</h5>
+    
+      
+<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="KYz2wyBy3kc" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/1/13/Toy_Story.jpg" width="220" height="342">
+    <h2>Toy Story</h2>
+    <h5>Toys with a story! (PG)</h5>
 </div>
 
   </body>
 </html>
-'''
 
-# A single tv show entry html template
-show_tile_content = '''
-<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
-    <img src="{poster_image_url}" width="220" height="342">
-    <h2>{title}</h2>
-    <h5>{storyline}</h5>
+<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="cRdxXPV9GNQ" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/b/b0/Avatar-Teaser-Poster.jpg" width="220" height="342">
+    <h2>Avatar</h2>
+    <h5>A Marine on an alien planet (PG-13)</h5>
 </div>
 
   </body>
 </html>
-'''
 
-def create_movie_tiles_content(movies):
-    """Creates the HTML content for the movie tiles"""
-    content = ''
-    for movie in movies:
-        # Extract the youtube ID from the url
-        youtube_id_match = re.search(
-            r'(?<=v=)[^&#]+', movie.trailer_youtube_url)
-        youtube_id_match = youtube_id_match or re.search(
-            r'(?<=be/)[^&#]+', movie.trailer_youtube_url)
-        trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
-                              else None)
+<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="m8e-FF8MsqU" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg" width="220" height="342">
+    <h2>Matrix</h2>
+    <h5>A hacker takes the red pill (R)</h5>
+</div>
 
-        # Append the tile for the movie with its content filled in
-        content += movie_tile_content.format(
-            title=movie.title,
-            poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id,
-            storyline=movie.storyline,
-            rating=movie.rating
-        )
-    return content
+  </body>
+</html>
 
-def create_tv_tiles_content(tv_shows):
-    """Creates the HTML content for the tv show tiles"""
-    content = ''
-    for show in tv_shows:
-        # Extract the youtube ID from the url
-        youtube_id_match = re.search(
-            r'(?<=v=)[^&#]+', show.trailer_youtube_url)
-        youtube_id_match = youtube_id_match or re.search(
-            r'(?<=be/)[^&#]+', show.trailer_youtube_url)
-        trailer_youtube_id = (youtube_id_match.group(0) if youtube_id_match
-                              else None)
+<div class="col-md-6 col-lg-4 media-tile text-center" data-trailer-youtube-id="u7VTkceSsEw" data-toggle="modal" data-target="#trailer">
+    <img src="https://upload.wikimedia.org/wikipedia/en/6/68/Ocean%27s_Eleven_2001_Poster.jpg" width="220" height="342">
+    <h2>Oceans Eleven</h2>
+    <h5>Pretty people steal money (NA)</h5>
+</div>
 
-        # Append the tile for the tv show with its content filled in
-        content += show_tile_content.format(
-            title=show.title,
-            poster_image_url=show.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id,
-            storyline=show.storyline,
-        )
-    return content
-
-
-def open_media_page(movies,tv_shows):
-    """Create or overwrite the output file"""
-    output_movie_file = open('fresh_movie_tomatoes.html', 'w')
-
-    # Replace the movie tiles placeholder
-    rendered_movie_content = movie_page_content.format(
-        movie_tiles=create_movie_tiles_content(movies))
-
-    # Write and output the movie file
-    # If this works, you can clean up the end_page_content and add to rendered
-    output_movie_file.write(main_page_head + main_page_content + rendered_movie_content)
-    output_movie_file.close()
-
-    output_tv_file = open('fresh_tv_tomatoes.html', 'w')
-    # Replace the Tv tiles placeholder
-    rendered_TV_content = tv_page_content.format(
-        TV_tiles=create_tv_tiles_content(tv_shows))
-
-    # Write and output the tv file
-    output_tv_file.write(main_page_head + main_page_content + rendered_TV_content)
-    output_tv_file.close()
-
-    # open the output file in the browser (in a new tab, if possible)
-    url = os.path.abspath(output_movie_file.name)
-    webbrowser.open('file://' + url, new=2)
-
+  </body>
+</html>
 
