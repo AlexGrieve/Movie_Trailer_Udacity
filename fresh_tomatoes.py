@@ -154,6 +154,7 @@ show_tile_content = '''
 </html>
 '''
 
+
 def create_movie_tiles_content(movies):
     """Creates the HTML content for the movie tiles"""
     content = ''
@@ -190,7 +191,7 @@ def create_tv_tiles_content(tv_shows):
     return content
 
 
-def open_media_page(movies,tv_shows):
+def open_media_page(movies, tv_shows):
     """Create or overwrite the output file"""
     output_movie_file = open('fresh_movie_tomatoes.html', 'w')
 
@@ -199,8 +200,8 @@ def open_media_page(movies,tv_shows):
         movie_tiles=create_movie_tiles_content(movies))
 
     # Write and output the movie file
-    output_movie_file.write(main_page_head + main_page_content 
-                                        + rendered_movie_content)
+    output_movie_file.write(main_page_head + main_page_content
+                            + rendered_movie_content)
     output_movie_file.close()
 
     output_tv_file = open('fresh_tv_tomatoes.html', 'w')
@@ -209,7 +210,7 @@ def open_media_page(movies,tv_shows):
         TV_tiles=create_tv_tiles_content(tv_shows))
 
     # Write and output the tv file
-    output_tv_file.write(main_page_head + main_page_content 
+    output_tv_file.write(main_page_head + main_page_content
                                         + rendered_TV_content)
     output_tv_file.close()
 
@@ -228,4 +229,3 @@ def extract_youtube_id(media):
                           else None)
 
     return trailer_youtube_id
-
